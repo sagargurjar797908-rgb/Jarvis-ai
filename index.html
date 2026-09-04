@@ -1,138 +1,235 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
   <title>JARVIS AI</title>
 
   <style>
     * {
       box-sizing: border-box;
-      margin: 0;
-      padding: 0;
     }
 
     body {
+      margin: 0;
       min-height: 100vh;
-      background: #02060a;
+
+      background:
+        radial-gradient(circle at center,
+        #123,
+        #020617 45%,
+        #000 100%);
+
       color: #00eaff;
+
       font-family: Arial, sans-serif;
+
       display: flex;
       justify-content: center;
       align-items: center;
+
       overflow: hidden;
     }
 
-    .jarvis {
-      width: 92%;
+    .container {
+      width: 95%;
       max-width: 600px;
+
       text-align: center;
+
+      padding: 30px;
     }
 
     h1 {
-      font-size: 48px;
+      font-size: 55px;
       letter-spacing: 8px;
-      text-shadow: 0 0 10px #00eaff, 0 0 30px #00eaff;
+
       margin-bottom: 10px;
+
+      text-shadow:
+        0 0 10px #00eaff,
+        0 0 30px #00eaff;
     }
 
-    .status {
+    #status {
       font-size: 14px;
       letter-spacing: 3px;
+
       margin-bottom: 35px;
     }
 
     .core {
-      width: 210px;
-      height: 210px;
+      width: 190px;
+      height: 190px;
+
       margin: auto;
-      border: 3px solid #00eaff;
+
       border-radius: 50%;
+
+      border: 3px solid #00eaff;
+
+      box-shadow:
+        0 0 20px #00eaff,
+        0 0 60px #00eaff,
+        inset 0 0 30px #00eaff;
+
       display: flex;
       justify-content: center;
       align-items: center;
-      box-shadow:
-        0 0 20px #00eaff,
-        inset 0 0 30px #00eaff;
+
       animation: pulse 2s infinite;
     }
 
-    .core-inner {
-      width: 125px;
-      height: 125px;
-      border: 2px solid #00eaff;
+    .core::before {
+      content: "";
+
+      width: 90px;
+      height: 90px;
+
       border-radius: 50%;
-      box-shadow: 0 0 25px #00eaff;
+
+      background: #00eaff;
+
+      box-shadow:
+        0 0 20px #00eaff,
+        0 0 50px #00eaff;
     }
 
     @keyframes pulse {
-      0%, 100% {
+      0% {
         transform: scale(1);
       }
+
       50% {
-        transform: scale(1.05);
+        transform: scale(1.08);
+      }
+
+      100% {
+        transform: scale(1);
       }
     }
 
-    .message {
-      margin: 35px auto 20px;
-      min-height: 50px;
+    #message {
+      min-height: 70px;
+
+      margin-top: 35px;
+
+      padding: 15px;
+
       font-size: 18px;
-      line-height: 1.5;
+
+      color: white;
     }
 
     button {
+      margin-top: 15px;
+
+      padding: 15px 30px;
+
       border: 2px solid #00eaff;
-      background: transparent;
-      color: #00eaff;
-      padding: 14px 35px;
+
       border-radius: 30px;
+
+      background: transparent;
+
+      color: #00eaff;
+
       font-size: 16px;
+
+      font-weight: bold;
+
       cursor: pointer;
+
       box-shadow: 0 0 15px #00eaff;
+
+      transition: 0.3s;
     }
 
-    button:active {
-      transform: scale(0.95);
+    button:hover {
+      background: #00eaff;
+      color: #000;
     }
 
-    .input-box {
-      margin-top: 25px;
+    .input-area {
       display: flex;
-      gap: 8px;
+
+      gap: 10px;
+
+      margin-top: 20px;
     }
 
     input {
       flex: 1;
-      padding: 12px;
+
+      padding: 14px;
+
+      border-radius: 25px;
+
       border: 1px solid #00eaff;
-      border-radius: 20px;
-      background: #061017;
-      color: white;
+
       outline: none;
+
+      background: rgba(0, 0, 0, 0.5);
+
+      color: white;
+
+      font-size: 16px;
+    }
+
+    input::placeholder {
+      color: #aaa;
     }
 
     .send {
-      padding: 10px 18px;
+      margin-top: 0;
+
+      padding: 12px 20px;
+    }
+
+    @media (max-width: 500px) {
+
+      h1 {
+        font-size: 40px;
+      }
+
+      .core {
+        width: 150px;
+        height: 150px;
+      }
+
+      .core::before {
+        width: 70px;
+        height: 70px;
+      }
+
+      .input-area {
+        flex-direction: column;
+      }
+
+      .send {
+        width: 100%;
+      }
     }
   </style>
 </head>
 
 <body>
 
-  <div class="jarvis">
+  <div class="container">
 
     <h1>JARVIS</h1>
 
-    <div class="status" id="status">
+    <div id="status">
       SYSTEM ONLINE
     </div>
 
-    <div class="core">
-      <div class="core-inner"></div>
-    </div>
+    <div class="core"></div>
 
-    <div class="message" id="message">
+    <div id="message">
       Hello Boss. I am ready.
     </div>
 
@@ -140,116 +237,285 @@
       🎙️ SPEAK
     </button>
 
-    <div class="input-box">
+    <div class="input-area">
+
       <input
-        type="text"
         id="textInput"
-        placeholder="Type a command..."
+        type="text"
+        placeholder="Type your command..."
+        onkeydown="handleEnter(event)"
       >
 
-      <button class="send" onclick="sendText()">
+      <button
+        class="send"
+        onclick="sendText()"
+      >
         SEND
       </button>
+
     </div>
 
   </div>
 
-<script>
-const BACKEND_URL = "https://jarvis-ai-ac93.onrender.com";
 
-const message = document.getElementById("message");
-const status = document.getElementById("status");
+<script>
+
+const BACKEND_URL =
+  "https://jarvis-ai-ac93.onrender.com";
+
+const message =
+  document.getElementById("message");
+
+const status =
+  document.getElementById("status");
+
+
+// =========================
+// TEXT TO SPEECH
+// =========================
 
 function speak(text) {
+
   message.innerText = text;
 
   if ("speechSynthesis" in window) {
-    const speech = new SpeechSynthesisUtterance(text);
+
+    const speech =
+      new SpeechSynthesisUtterance(text);
+
     speech.lang = "en-IN";
+
     speech.rate = 1;
+
     speech.pitch = 1;
 
     speechSynthesis.cancel();
+
     speechSynthesis.speak(speech);
   }
 }
 
-async function askJarvis(command) {
-  if (!command || !command.trim()) return;
 
-  status.innerText = "THINKING...";
-  message.innerText = "JARVIS is thinking...";
+// =========================
+// ASK JARVIS
+// =========================
+
+async function askJarvis(command) {
+
+  if (!command || !command.trim()) {
+    return;
+  }
+
+  status.innerText =
+    "THINKING...";
+
+  message.innerText =
+    "JARVIS is thinking...";
+
 
   try {
-    const response = await fetch(`${BACKEND_URL}/chat`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        message: command
-      })
-    });
 
-    const data = await response.json();
+    const response =
+      await fetch(
+        `${BACKEND_URL}/chat`,
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type":
+              "application/json"
+          },
+
+          body: JSON.stringify({
+            message: command
+          })
+        }
+      );
+
+
+    const data =
+      await response.json();
+
 
     if (!response.ok) {
-      throw new Error(data.error || "Server error");
+
+      throw new Error(
+        data.error ||
+        "Server error"
+      );
     }
+
+
+    if (!data.reply) {
+
+      throw new Error(
+        "No reply received"
+      );
+    }
+
 
     speak(data.reply);
 
+
   } catch (error) {
+
     console.error(error);
-    speak("Sorry Boss, I am having trouble connecting to my AI brain.");
+
+    speak(
+      "Sorry Boss, I am having trouble connecting to my AI brain."
+    );
   }
 
-  status.innerText = "SYSTEM ONLINE";
+
+  status.innerText =
+    "SYSTEM ONLINE";
 }
 
+
+// =========================
+// SEND TEXT
+// =========================
+
 function sendText() {
-  const input = document.getElementById("textInput");
-  const command = input.value.trim();
+
+  const input =
+    document.getElementById(
+      "textInput"
+    );
+
+  const command =
+    input.value.trim();
+
 
   if (command) {
+
     input.value = "";
+
     askJarvis(command);
   }
 }
 
+
+// =========================
+// ENTER KEY
+// =========================
+
+function handleEnter(event) {
+
+  if (event.key === "Enter") {
+
+    sendText();
+  }
+}
+
+
+// =========================
+// VOICE RECOGNITION
+// =========================
+
 function startListening() {
+
   const SpeechRecognition =
     window.SpeechRecognition ||
     window.webkitSpeechRecognition;
 
+
   if (!SpeechRecognition) {
-    speak("Sorry Boss, voice recognition is not supported in this browser.");
+
+    speak(
+      "Sorry Boss, voice recognition is not supported in this browser."
+    );
+
     return;
   }
 
-  const recognition = new SpeechRecognition();
 
-  recognition.lang = "en-IN";
-  recognition.continuous = false;
-  recognition.interimResults = false;
+  const recognition =
+    new SpeechRecognition();
 
-  status.innerText = "LISTENING...";
 
-  recognition.start();
+  recognition.lang =
+    "en-IN";
 
-  recognition.onresult = function(event) {
-    const command = event.results[0][0].transcript;
+  recognition.continuous =
+    false;
 
-    message.innerText = command;
-    askJarvis(command);
-  };
+  recognition.interimResults =
+    false;
 
-  recognition.onerror = function() {
-    status.innerText = "SYSTEM ONLINE";
-    speak("Sorry Boss, I could not understand that.");
-  };
+
+  status.innerText =
+    "LISTENING...";
+
+
+  try {
+
+    recognition.start();
+
+  } catch (error) {
+
+    console.log(error);
+  }
+
+
+  recognition.onresult =
+    function(event) {
+
+      const command =
+        event.results[0][0]
+          .transcript;
+
+
+      message.innerText =
+        command;
+
+
+      askJarvis(command);
+    };
+
+
+  recognition.onerror =
+    function(event) {
+
+      console.error(
+        "Voice error:",
+        event.error
+      );
+
+      status.innerText =
+        "SYSTEM ONLINE";
+
+      speak(
+        "Sorry Boss, I could not understand that."
+      );
+    };
+
+
+  recognition.onend =
+    function() {
+
+      if (
+        status.innerText ===
+        "LISTENING..."
+      ) {
+
+        status.innerText =
+          "SYSTEM ONLINE";
+      }
+    };
 }
+
+
+// =========================
+// STARTUP
+// =========================
+
+console.log(
+  "JARVIS frontend loaded."
+);
+
 </script>
 
 </body>
-      </html>
+
+</html>    
