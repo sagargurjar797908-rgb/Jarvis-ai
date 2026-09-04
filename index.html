@@ -154,112 +154,102 @@
 
   </div>
 
-  <script>
+<script>
+const BACKEND_URL = "https://jarvis-ai-ac93.onrender.com";
 
-    const message = document.getElementById("message");
-    const status = document.getElementById("status");
+const message = document.getElementById("message");
+const status = document.getElementById("status");
 
-    function speak(text) {
-      message.innerText = text;
+function speak(text) {
+  message.innerText = text;
 
-      if ("speechSynthesis" in window) {
-        const speech = new SpeechSynthesisUtterance(text);
-        speech.lang = "en-IN";
-        speech.rate = 1;
-        speech.pitch = 1;
-        speechSynthesis.cancel();
-        speechSynthesis.speak(speech);
-      }
+  if ("speechSynthesis" in window) {
+    const speech = new SpeechSynthesisUtterance(text);
+    speech.lang = "en-IN";
+    speech.rate = 1;
+    speech.pitch = 1;
+
+    speechSynthesis.cancel();
+    speechSynthesis.speak(speech);
+  }
+}
+
+async function askJarvis(command) {
+  if (!command || !command.trim()) return;
+
+  status.innerText = "THINKING...";
+  message.innerText = "JARVIS is thinking...";
+
+  try {
+    const response = await fetch(`${BACKEND_URL}/chat`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        message: command
+      })
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.error || "Server error");
     }
 
-    function processCommand(command) {
+    speak(data.reply);
 
-      command = command.toLowerCase().trim();
+  } catch (error) {
+    console.error(error);
+    speak("Sorry Boss, I am having trouble connecting to my AI brain.");
+  }
 
-      if (command.includes("hello") ||
-          command.includes("hi")) {
+  status.innerText = "SYSTEM ONLINE";
+}
 
-        speak("Hello Boss. How can I help you?");
-      }
+function sendText() {
+  const input = document.getElementById("textInput");
+  const command = input.value.trim();
 
-      else if (command.includes("your name")) {
+  if (command) {
+    input.value = "";
+    askJarvis(command);
+  }
+}
 
-        speak("My name is JARVIS, your AI assistant.");
-      }
+function startListening() {
+  const SpeechRecognition =
+    window.SpeechRecognition ||
+    window.webkitSpeechRecognition;
 
-      else if (command.includes("time")) {
+  if (!SpeechRecognition) {
+    speak("Sorry Boss, voice recognition is not supported in this browser.");
+    return;
+  }
 
-        const time = new Date().toLocaleTimeString();
-        speak("The current time is " + time);
-      }
+  const recognition = new SpeechRecognition();
 
-      else if (command.includes("open google")) {
+  recognition.lang = "en-IN";
+  recognition.continuous = false;
+  recognition.interimResults = false;
 
-        speak("Opening Google.");
-        window.open("https://www.google.com", "_blank");
-      }
+  status.innerText = "LISTENING...";
 
-      else {
+  recognition.start();
 
-        speak("I heard you say: " + command);
-      }
-    }
+  recognition.onresult = function(event) {
+    const command = event.results[0][0].transcript;
 
-    function sendText() {
+    message.innerText = command;
+    askJarvis(command);
+  };
 
-      const input = document.getElementById("textInput");
-      const command = input.value;
-
-      if (command.trim() !== "") {
-        processCommand(command);
-        input.value = "";
-      }
-    }
-
-    function startListening() {
-
-      const SpeechRecognition =
-        window.SpeechRecognition ||
-        window.webkitSpeechRecognition;
-
-      if (!SpeechRecognition) {
-        speak("Sorry Boss, voice recognition is not supported in this browser.");
-        return;
-      }
-
-      const recognition = new SpeechRecognition();
-
-      recognition.lang = "en-IN";
-      recognition.continuous = false;
-      recognition.interimResults = false;
-
-      status.innerText = "LISTENING...";
-
-      recognition.start();
-
-      recognition.onresult = function(event) {
-
-        const command =
-          event.results[0][0].transcript;
-
-        status.innerText = "PROCESSING...";
-
-        processCommand(command);
-
-        setTimeout(() => {
-          status.innerText = "SYSTEM ONLINE";
-        }, 1000);
-      };
-
-      recognition.onerror = function() {
-
-        status.innerText = "SYSTEM ONLINE";
-
-        speak("Sorry Boss, I could not understand that.");
-      };
-    }
-
-  </script>
+  recognition.onerror = function() {
+    status.innerText = "SYSTEM ONLINE";
+    speak("Sorry Boss, I could not understand that.");
+  };
+}
+</script>
 
 </body>
       </html>
