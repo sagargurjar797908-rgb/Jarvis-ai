@@ -1,21 +1,21 @@
 
 const express = require("express");
 const cors = require("cors");
-const OpenAI = require("openai");
+const { GoogleGenAI } = require("@google/genai");
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 
-const client = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY
+const ai = new GoogleGenAI({
+  apiKey: process.env.GEMINI_API_KEY
 });
 
 app.get("/", (req, res) => {
   res.json({
     status: "online",
-    message: "JARVIS AI backend is online, Boss!"
+    message: "JARVIS Gemini backend is online, Boss!"
   });
 });
 
@@ -29,26 +29,22 @@ app.post("/chat", async (req, res) => {
       });
     }
 
-    const response = await client.responses.create({
-      model: "gpt-5-mini",
-      input: [
-        {
-          role: "system",
-          content: "You are JARVIS, a helpful AI assistant. Reply naturally and concisely. You may understand Hinglish."
-        },
-        {
-          role: "user",
-          content: message
-        }
-      ]
+    const response = await ai.models.generateContent({
+      model: "gemini-2.5-flash",
+      contents: `You are JARVIS, a helpful AI assistant.
+Understand Hindi, English and Hinglish.
+Call the user "Boss".
+Keep answers clear and reasonably concise.
+
+User: ${message}`
     });
 
     res.json({
-      reply: response.output_text
+      reply: response.text
     });
 
   } catch (error) {
-    console.error(error);
+    console.error("Gemini Error:", error);
 
     res.status(500).json({
       error: "JARVIS AI could not process the request."
@@ -61,3 +57,9 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`JARVIS server running on port ${PORT}`);
 });
+
+फिर Commit changes दबाओ. ✅
+
+Render automatically नया deployment शुरू करेगा।
+
+Boss, Render में deployment फिर से 🟢 Live हो जाए, तब “Live” लिखना। 🤖🔥
