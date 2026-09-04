@@ -11,6 +11,7 @@ const ai = new GoogleGenAI({
   apiKey: process.env.GEMINI_API_KEY
 });
 
+// Home / status
 app.get("/", (req, res) => {
   res.json({
     status: "online",
@@ -18,11 +19,12 @@ app.get("/", (req, res) => {
   });
 });
 
+// AI Chat
 app.post("/chat", async (req, res) => {
   try {
     const message = req.body.message;
 
-    if (!message) {
+    if (!message || !message.trim()) {
       return res.status(400).json({
         error: "Message is required"
       });
@@ -30,9 +32,15 @@ app.post("/chat", async (req, res) => {
 
     const interaction = await ai.interactions.create({
       model: "gemini-3.6-flash",
+
       input: message,
+
       system_instruction:
-        "You are JARVIS, a helpful AI assistant. Understand Hindi, English and Hinglish. Call the user Boss. Keep answers clear and concise."
+        "You are JARVIS, a helpful personal AI assistant. " +
+        "Understand Hindi, English and Hinglish. " +
+        "Always call the user Boss. " +
+        "Answer clearly, naturally and concisely. " +
+        "Do not mention that you are Gemini unless asked."
     });
 
     res.json({
@@ -48,6 +56,7 @@ app.post("/chat", async (req, res) => {
   }
 });
 
+// Server
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
