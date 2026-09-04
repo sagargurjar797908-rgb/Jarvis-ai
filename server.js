@@ -1,4 +1,3 @@
-
 const express = require("express");
 const cors = require("cors");
 const { GoogleGenAI } = require("@google/genai");
@@ -29,21 +28,15 @@ app.post("/chat", async (req, res) => {
       });
     }
 
-    const response = await ai.interactions.create({
-  model: "gemini-3.6-flash",
-  input: message,
-  system_instruction:
-    "You are JARVIS, a helpful AI assistant. Understand Hindi, English and Hinglish. Call the user Boss. Keep answers clear and concise."
-});
-
-res.json({
-  reply: response.output_text
-});
-User: ${message}`
+    const interaction = await ai.interactions.create({
+      model: "gemini-3.6-flash",
+      input: message,
+      system_instruction:
+        "You are JARVIS, a helpful AI assistant. Understand Hindi, English and Hinglish. Call the user Boss. Keep answers clear and concise."
     });
 
     res.json({
-      reply: response.text
+      reply: interaction.output_text
     });
 
   } catch (error) {
