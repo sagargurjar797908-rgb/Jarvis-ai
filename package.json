@@ -10,7 +10,7 @@
   "dependencies": {
     "express": "^4.21.2",
     "cors": "^2.8.5",
-{
+ {
   "name": "jarvis-ai",
   "version": "1.0.0",
   "description": "JARVIS AI Assistant Backend",
