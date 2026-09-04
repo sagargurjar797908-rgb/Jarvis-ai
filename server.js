@@ -29,13 +29,16 @@ app.post("/chat", async (req, res) => {
       });
     }
 
-    const response = await ai.models.generateContent({
-      model: "gemini-2.5-flash",
-      contents: `You are JARVIS, a helpful AI assistant.
-Understand Hindi, English and Hinglish.
-Call the user "Boss".
-Keep answers clear and reasonably concise.
+    const response = await ai.interactions.create({
+  model: "gemini-3.6-flash",
+  input: message,
+  system_instruction:
+    "You are JARVIS, a helpful AI assistant. Understand Hindi, English and Hinglish. Call the user Boss. Keep answers clear and concise."
+});
 
+res.json({
+  reply: response.output_text
+});
 User: ${message}`
     });
 
