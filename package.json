@@ -10,6 +10,19 @@
   "dependencies": {
     "express": "^4.21.2",
     "cors": "^2.8.5",
-    "@google/genai": "^1.17.0"
+    {
+  "name": "jarvis-ai",
+  "version": "1.0.0",
+  "description": "JARVIS AI Assistant Backend",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.21.2",
+    "cors": "^2.8.5",
+    "@google/genai": "^2.3.0"
+  }
+  }
   }
 }
