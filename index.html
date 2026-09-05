@@ -3,9 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
-
-  <meta name="viewport"
-        content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>JARVIS AI</title>
 
@@ -17,136 +15,85 @@
     body {
       margin: 0;
       min-height: 100vh;
-
-      background:
-        radial-gradient(circle at center,
-        #123,
-        #020617 45%,
-        #000 100%);
-
+      background: radial-gradient(circle at center, #123, #020617 45%, #000 100%);
       color: #00eaff;
-
       font-family: Arial, sans-serif;
-
       display: flex;
       justify-content: center;
       align-items: center;
-
       overflow: hidden;
     }
 
     .container {
       width: 95%;
       max-width: 600px;
-
       text-align: center;
-
       padding: 30px;
     }
 
     h1 {
       font-size: 55px;
       letter-spacing: 8px;
-
       margin-bottom: 10px;
-
-      text-shadow:
-        0 0 10px #00eaff,
-        0 0 30px #00eaff;
+      text-shadow: 0 0 10px #00eaff, 0 0 30px #00eaff;
     }
 
     #status {
       font-size: 14px;
       letter-spacing: 3px;
-
       margin-bottom: 35px;
     }
 
     .core {
       width: 190px;
       height: 190px;
-
       margin: auto;
-
       border-radius: 50%;
-
       border: 3px solid #00eaff;
-
       box-shadow:
         0 0 20px #00eaff,
         0 0 60px #00eaff,
         inset 0 0 30px #00eaff;
-
       display: flex;
       justify-content: center;
       align-items: center;
-
       animation: pulse 2s infinite;
     }
 
     .core::before {
       content: "";
-
       width: 90px;
       height: 90px;
-
       border-radius: 50%;
-
       background: #00eaff;
-
-      box-shadow:
-        0 0 20px #00eaff,
-        0 0 50px #00eaff;
+      box-shadow: 0 0 20px #00eaff, 0 0 50px #00eaff;
     }
 
     @keyframes pulse {
-      0% {
-        transform: scale(1);
-      }
-
-      50% {
-        transform: scale(1.08);
-      }
-
-      100% {
-        transform: scale(1);
-      }
+      0% { transform: scale(1); }
+      50% { transform: scale(1.08); }
+      100% { transform: scale(1); }
     }
 
     #message {
       min-height: 70px;
-
       margin-top: 35px;
-
       padding: 15px;
-
       font-size: 18px;
-
       color: white;
     }
 
     button {
       margin-top: 15px;
-
       padding: 15px 30px;
-
       border: 2px solid #00eaff;
-
       border-radius: 30px;
-
       background: transparent;
-
       color: #00eaff;
-
       font-size: 16px;
-
       font-weight: bold;
-
       cursor: pointer;
-
       box-shadow: 0 0 15px #00eaff;
-
-      transition: 0.3s;
     }
 
     button:hover {
@@ -156,27 +103,18 @@
 
     .input-area {
       display: flex;
-
       gap: 10px;
-
       margin-top: 20px;
     }
 
     input {
       flex: 1;
-
       padding: 14px;
-
       border-radius: 25px;
-
       border: 1px solid #00eaff;
-
       outline: none;
-
       background: rgba(0, 0, 0, 0.5);
-
       color: white;
-
       font-size: 16px;
     }
 
@@ -186,12 +124,10 @@
 
     .send {
       margin-top: 0;
-
       padding: 12px 20px;
     }
 
     @media (max-width: 500px) {
-
       h1 {
         font-size: 40px;
       }
@@ -223,9 +159,7 @@
 
     <h1>JARVIS</h1>
 
-    <div id="status">
-      SYSTEM ONLINE
-    </div>
+    <div id="status">SYSTEM ONLINE</div>
 
     <div class="core"></div>
 
@@ -246,10 +180,7 @@
         onkeydown="handleEnter(event)"
       >
 
-      <button
-        class="send"
-        onclick="sendText()"
-      >
+      <button class="send" onclick="sendText()">
         SEND
       </button>
 
@@ -270,9 +201,9 @@ const status =
   document.getElementById("status");
 
 
-// =========================
+// ============================
 // TEXT TO SPEECH
-// =========================
+// ============================
 
 function speak(text) {
 
@@ -284,27 +215,103 @@ function speak(text) {
       new SpeechSynthesisUtterance(text);
 
     speech.lang = "en-IN";
-
     speech.rate = 1;
-
     speech.pitch = 1;
 
     speechSynthesis.cancel();
-
     speechSynthesis.speak(speech);
   }
 }
 
 
-// =========================
-// ASK JARVIS
-// =========================
+// ============================
+// LOCAL JARVIS COMMANDS
+// ============================
+
+function handleCommand(command) {
+
+  const text =
+    command.toLowerCase().trim();
+
+
+  // GOOGLE
+  if (
+    text.includes("google kholo") ||
+    text.includes("google khol") ||
+    text.includes("open google")
+  ) {
+
+    speak("Google khol raha hoon Boss.");
+
+    window.open(
+      "https://www.google.com",
+      "_blank"
+    );
+
+    return true;
+  }
+
+
+  // YOUTUBE
+  if (
+    text.includes("youtube kholo") ||
+    text.includes("youtube khol") ||
+    text.includes("open youtube")
+  ) {
+
+    speak("YouTube khol raha hoon Boss.");
+
+    window.open(
+      "https://www.youtube.com",
+      "_blank"
+    );
+
+    return true;
+  }
+
+
+  // GITHUB
+  if (
+    text.includes("github kholo") ||
+    text.includes("github khol") ||
+    text.includes("open github")
+  ) {
+
+    speak("GitHub khol raha hoon Boss.");
+
+    window.open(
+      "https://github.com",
+      "_blank"
+    );
+
+    return true;
+  }
+
+
+  return false;
+}
+
+
+// ============================
+// AI BRAIN
+// ============================
 
 async function askJarvis(command) {
 
   if (!command || !command.trim()) {
     return;
   }
+
+
+  // Pehle local command check karo
+  if (handleCommand(command)) {
+
+    status.innerText =
+      "SYSTEM ONLINE";
+
+    return;
+  }
+
 
   status.innerText =
     "THINKING...";
@@ -372,9 +379,9 @@ async function askJarvis(command) {
 }
 
 
-// =========================
+// ============================
 // SEND TEXT
-// =========================
+// ============================
 
 function sendText() {
 
@@ -396,22 +403,21 @@ function sendText() {
 }
 
 
-// =========================
+// ============================
 // ENTER KEY
-// =========================
+// ============================
 
 function handleEnter(event) {
 
   if (event.key === "Enter") {
-
     sendText();
   }
 }
 
 
-// =========================
+// ============================
 // VOICE RECOGNITION
-// =========================
+// ============================
 
 function startListening() {
 
@@ -506,16 +512,17 @@ function startListening() {
 }
 
 
-// =========================
+// ============================
 // STARTUP
-// =========================
+// ============================
 
 console.log(
-  "JARVIS frontend loaded."
+  "JARVIS frontend loaded successfully."
 );
 
 </script>
 
 </body>
 
-</html>    
+</html>
+
